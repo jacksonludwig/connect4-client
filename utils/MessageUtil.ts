@@ -1,15 +1,18 @@
-type MessageType = {
+type MessageUtilType = {
   ws: WebSocket;
   message: { [key: string]: any };
+  setGameId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 class StatusNotificationUtil {
-  private ws: MessageType['ws'];
-  private message: MessageType['message'];
+  private ws: MessageUtilType['ws'];
+  private message: MessageUtilType['message'];
+  private setGameId: MessageUtilType['setGameId'];
 
-  constructor(data: MessageType) {
+  constructor(data: MessageUtilType) {
     this.ws = data.ws;
     this.message = data.message;
+    this.setGameId = data.setGameId;
   }
 
   public GameOver() {
@@ -30,12 +33,14 @@ class StatusNotificationUtil {
 }
 
 class MessageUtil {
-  private ws: MessageType['ws'];
-  private message: MessageType['message'];
+  private ws: MessageUtilType['ws'];
+  private message: MessageUtilType['message'];
+  private setGameId: MessageUtilType['setGameId'];
 
-  constructor(data: MessageType) {
+  constructor(data: MessageUtilType) {
     this.ws = data.ws;
     this.message = data.message;
+    this.setGameId = data.setGameId;
   }
 
   public StatusNotification() {
@@ -44,11 +49,25 @@ class MessageUtil {
   }
 
   public JoinGame() {
-    return;
+    const message = this.message as Server.ResponseMessage<Server.JoinResponse>;
+
+    if (message.status === 'rejected') {
+      console.log('could not join game');
+      return;
+    }
+
+    this.setGameId(message.body.gameId);
   }
 
   public CreateGame() {
-    return;
+    const message = this.message as Server.ResponseMessage<Server.CreateResponse>;
+
+    if (message.status === 'rejected') {
+      console.log('could not create game');
+      return;
+    }
+
+    this.setGameId(message.body.gameId);
   }
 
   public PlacePiece() {

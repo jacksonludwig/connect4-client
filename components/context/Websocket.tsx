@@ -49,13 +49,13 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
    * Simple wrapper function to log if websocket is not yet connected. This should never actually happen
    * since we show spinner while socket connects.
    */
-  const sendMessage = (data: string | ArrayBufferLike | Blob | ArrayBufferView): void => {
+  const sendMessage = (data: { [key: string]: any }): void => {
     if (!ws.current) {
       console.log(`socket not connected: ${data} not sent`);
       return;
     }
 
-    ws.current.send(data);
+    ws.current.send(JSON.stringify(data));
   };
 
   useEffect(() => {
@@ -64,11 +64,13 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     socket.onopen = () => setIsSocketConnected(true);
     socket.onclose = () => console.log('socket closed');
     socket.onmessage = (event) => {
-      console.log(`received message from server: ${event}`);
+      console.log(`received message from server: ${event.data}`);
 
       const data = JSON.parse(event.data);
 
-      new MessageUtil({ ws: socket, message: event.data })[data.name as PossibleMessage];
+      new MessageUtil({ ws: socket, message: data, setGameId })[
+        data.name as Server.PossibleMessage
+      ]();
     };
 
     ws.current = socket;

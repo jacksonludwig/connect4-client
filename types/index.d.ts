@@ -6,7 +6,7 @@ type Board = PlayerToken[][];
 
 type WebsocketContextType = {
   ws: WebSocket | null;
-  sendMessage: typeof WebSocket.prototype.send;
+  sendMessage: (data: { [key: string]: any }) => void;
   board: Board;
   winner: WinnerToken;
   currentTurn: PlayerToken;
@@ -42,7 +42,9 @@ namespace Server {
     GameOver = 'GameOver',
   }
 
-  export type JoinResponse = Record<string, never>;
+  export type JoinResponse = {
+    gameId: string;
+  };
 
   export type CreateResponse = {
     gameId: string;
@@ -64,19 +66,15 @@ namespace Server {
     body?: GameStateBody;
   };
 
-  export type RejectedResponseMessage = {
+  export type ResponseMessage<AcceptedBody> = {
     name: Client.Actions;
     type: 'response';
-    status: 'rejected';
+    status: 'accepted' | 'rejected';
     reason: Error;
+    body: AcceptedBody;
   };
 
-  export type AcceptedResponseMessage = {
-    name: Client.Actions;
-    type: 'response';
-    status: 'accepted';
-    body: JoinResponse | CreateResponse;
-  };
+  export type PossibleMessage = 'CreateGame' | 'JoinGame' | 'PlacePiece' | 'StatusNotification';
 }
 
 namespace Client {
@@ -104,4 +102,3 @@ namespace Client {
   };
 }
 
-type PossibleMessage = 'CreateGame' | 'JoinGame' | 'PlacePiece' | 'StatusNotification';

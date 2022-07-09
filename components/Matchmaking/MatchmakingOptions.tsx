@@ -1,15 +1,35 @@
 import { Button, Center, Flex, HStack, Input, Text } from '@chakra-ui/react';
 import { DuplicateIcon } from '@heroicons/react/outline';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
+import { useWebSocket } from '../context/Websocket';
 
 /**
  * Matchmaking options (e.g. join, create)
  */
 const MatchmakingOptions = (): ReactElement => {
+  const { gameId, sendMessage } = useWebSocket();
+
+  const [joinGameId, setJoinGameId] = useState<string>('');
+
+  const createGame = () => {
+    sendMessage({
+      name: 'CreateGame',
+    });
+  };
+
+  const joinGame = () => {
+    sendMessage({
+      name: 'JoinGame',
+      body: {
+        gameId: joinGameId,
+      },
+    });
+  };
+
   return (
     <HStack>
       <Flex minWidth='50%' direction='column'>
-        <Button colorScheme='blue' size='lg'>
+        <Button colorScheme='blue' size='lg' onClick={createGame}>
           Create Game
         </Button>
         <Flex
@@ -20,18 +40,24 @@ const MatchmakingOptions = (): ReactElement => {
           rounded='lg'
           bg='gray.200'
         >
-          <Text color='gray.500'>Your Game ID</Text>
+          <Text color='gray.500'>{gameId || 'Your Game ID'}</Text>
           <Button ml='1' color='gray.600' p='0' size='sm' variant='ghost'>
-            <DuplicateIcon height='1.3rem' width='1.3rem' />
+            <Center h='1.3rem' w='1.3rem'>
+              <DuplicateIcon />
+            </Center>
           </Button>
         </Flex>
       </Flex>
       <Flex minWidth='50%' direction='column'>
-        <Button colorScheme='blue' size='lg'>
+        <Button colorScheme='blue' size='lg' onClick={joinGame}>
           Join Game
         </Button>
         <Center minHeight='3.0rem' padding='1' rounded='lg' bg='gray.200'>
-          <Input placeholder='Their Game ID' color='gray.500' />
+          <Input
+            placeholder='Their Game ID'
+            color='gray.500'
+            onChange={(e) => setJoinGameId(e.target.value)}
+          />
         </Center>
       </Flex>
     </HStack>
