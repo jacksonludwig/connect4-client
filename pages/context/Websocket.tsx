@@ -10,6 +10,9 @@ export const WebsocketContext = createContext<WebsocketContextType>({
   isSocketConnected: false,
 });
 
+/**
+ * Wrapper around `useContext(WebsocketContext)`
+ */
 export const useWebSocket = (): WebsocketContextType => useContext(WebsocketContext);
 
 type Props = {

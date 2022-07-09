@@ -1,6 +1,6 @@
 import BoardSlot from './BoardSlot';
-import { ReactElement, useContext } from 'react';
-import { WebsocketContext } from '../../context/Websocket';
+import { ReactElement } from 'react';
+import { useWebSocket } from '../../context/Websocket';
 import { Flex } from '@chakra-ui/react';
 
 /**
@@ -8,7 +8,7 @@ import { Flex } from '@chakra-ui/react';
  * The board state represents which slots have been taken by each player, and which are still open.
  */
 const Board = (): ReactElement => {
-  const { board } = useContext(WebsocketContext);
+  const { board } = useWebSocket();
 
   return (
     <>
