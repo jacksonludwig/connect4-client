@@ -1,27 +1,13 @@
 import React, { createContext, ReactElement, useContext, useEffect, useRef, useState } from 'react';
 
-export type PlayerToken = 0 | 1 | 2;
-
-export type WinnerToken = PlayerToken | -1;
-
-export type Board = PlayerToken[][];
-
-export type WebsocketContextType = {
-  ws: WebSocket | null;
-  sendMessage: typeof WebSocket.prototype.send;
-  board: Board;
-  winner: WinnerToken;
-  currentTurn: PlayerToken;
-  gameStarted: boolean;
-};
-
 export const WebsocketContext = createContext<WebsocketContextType>({
   ws: null,
-  sendMessage: () => [],
+  sendMessage: () => {},
   board: [],
   winner: -1,
   currentTurn: 1,
-  gameStarted: false,
+  isGameStarted: false,
+  isSocketConnected: false,
 });
 
 export const useWebSocket = (): WebsocketContextType => useContext(WebsocketContext);
@@ -48,11 +34,12 @@ export const WebsocketProvider = ({ children }: Props): ReactElement => {
 
   const [winner, setWinner] = useState<WinnerToken>(-1);
   const [currentTurn, setCurrentTurn] = useState<PlayerToken>(1);
-  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
+  const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
 
   /**
-   * Simple wrapper function to log if websocket is not yet connected. This could be changed
-   * to send an alert instead of logging the error.
+   * Simple wrapper function to log if websocket is not yet connected. This should never actually happen
+   * since we show spinner while socket connects.
    */
   const sendMessage = (data: string | ArrayBufferLike | Blob | ArrayBufferView): void => {
     if (!ws.current) {
@@ -66,7 +53,7 @@ export const WebsocketProvider = ({ children }: Props): ReactElement => {
   useEffect(() => {
     const socket = new WebSocket(process.env.REACT_APP_SOCKET_HOST ?? 'ws://localhost:4001');
 
-    socket.onopen = () => console.log('socket opened');
+    socket.onopen = () => setIsSocketConnected(true);
     socket.onclose = () => console.log('socket closed');
     socket.onmessage = (event) => console.log(`socket message: ${event.data}`);
 
@@ -78,10 +65,11 @@ export const WebsocketProvider = ({ children }: Props): ReactElement => {
   const ret = {
     ws: ws.current,
     sendMessage,
+    isSocketConnected,
     board,
     winner,
     currentTurn,
-    gameStarted,
+    isGameStarted,
   };
 
   return <WebsocketContext.Provider value={ret}>{children}</WebsocketContext.Provider>;
