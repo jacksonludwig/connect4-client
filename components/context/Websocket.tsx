@@ -1,4 +1,5 @@
 import React, { createContext, ReactElement, useContext, useEffect, useRef, useState } from 'react';
+import MessageUtil from '../../utils/MessageUtil';
 
 export const WebsocketContext = createContext<WebsocketContextType>({
   ws: null,
@@ -60,7 +61,13 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
 
     socket.onopen = () => setIsSocketConnected(true);
     socket.onclose = () => console.log('socket closed');
-    socket.onmessage = (event) => console.log(`socket message: ${event.data}`);
+    socket.onmessage = (event) => {
+      console.log(`received message from server: ${event}`);
+
+      const data = JSON.parse(event.data);
+
+      new MessageUtil({ ws: socket, message: event.data })[data.name as PossibleMessage];
+    };
 
     ws.current = socket;
 
