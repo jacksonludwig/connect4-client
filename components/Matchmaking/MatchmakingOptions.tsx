@@ -1,4 +1,4 @@
-import { Button, Center, Flex, HStack, Input, Text } from '@chakra-ui/react';
+import { Button, Center, Flex, HStack, Input, Text, useToast } from '@chakra-ui/react';
 import { DuplicateIcon } from '@heroicons/react/outline';
 import { ReactElement, useState } from 'react';
 import { useWebSocket } from '../context/Websocket';
@@ -10,6 +10,7 @@ const MatchmakingOptions = (): ReactElement => {
   const { gameId, sendMessage } = useWebSocket();
 
   const [joinGameId, setJoinGameId] = useState<string>('');
+  const toast = useToast();
 
   const createGame = () => {
     sendMessage({
@@ -23,6 +24,16 @@ const MatchmakingOptions = (): ReactElement => {
       body: {
         gameId: joinGameId,
       },
+    });
+  };
+
+  const copyGameIdToClipboard = () => {
+    navigator.clipboard.writeText(gameId);
+    toast({
+      title: 'Game Id Copied!',
+      status: 'success',
+      isClosable: true,
+      duration: 3000,
     });
   };
 
@@ -41,7 +52,14 @@ const MatchmakingOptions = (): ReactElement => {
           bg='gray.200'
         >
           <Text color='gray.500'>{gameId || 'Your Game ID'}</Text>
-          <Button ml='1' color='gray.600' p='0' size='sm' variant='ghost'>
+          <Button
+            ml='1'
+            color='gray.600'
+            p='0'
+            size='sm'
+            variant='ghost'
+            onClick={copyGameIdToClipboard}
+          >
             <Center h='1.3rem' w='1.3rem'>
               <DuplicateIcon />
             </Center>
