@@ -10,19 +10,19 @@ const LoadingOverlay = ({ enabled }: Props): ReactElement => {
     <>
       {enabled && (
         <Flex
-          align="center"
-          justify="center"
-          position="absolute"
-          h="100%"
-          w="100%"
-          bg="rgba(0, 0, 0, 0.5)"
+          align='center'
+          justify='center'
+          position='absolute'
+          h='100%'
+          w='100%'
+          bg='rgba(0, 0, 0, 0.5)'
         >
           <Spinner
-            thickness="0.3rem"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
+            thickness='0.3rem'
+            speed='0.65s'
+            emptyColor='gray.200'
+            color='blue.500'
+            size='xl'
           />
         </Flex>
       )}

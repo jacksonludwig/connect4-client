@@ -12,16 +12,16 @@ const innerResponsiveSize = { base: '2.75rem', md: '3.7rem', lg: '5.5rem', xl: '
 const BoardSlot = ({ filledBy }: BoardSlotProps): ReactElement => {
   return (
     <Flex
-      justify="center"
-      align="center"
+      justify='center'
+      align='center'
       h={outResponseiveSize}
       w={outResponseiveSize}
-      bg="lightblue"
+      bg='lightblue'
     >
       <Box
         h={innerResponsiveSize}
         w={innerResponsiveSize}
-        borderRadius="100%"
+        borderRadius='100%'
         bg={`${PLAYER_COLOR_MAP[filledBy]}`}
       ></Box>
     </Flex>

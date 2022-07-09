@@ -3,6 +3,7 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": "error",
-    "no-undef": "off"
+    "no-undef": "off",
+    "jsx-quotes": [2, "prefer-single"]
   }
 }
