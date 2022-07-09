@@ -1,6 +1,6 @@
 import BoardSlot from './BoardSlot';
 import { ReactElement } from 'react';
-import { useWebSocket } from '../../context/Websocket';
+import { useWebSocket } from '../context/Websocket';
 import { Flex } from '@chakra-ui/react';
 
 /**
