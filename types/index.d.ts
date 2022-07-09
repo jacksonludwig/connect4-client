@@ -12,6 +12,7 @@ type WebsocketContextType = {
   currentTurn: PlayerToken;
   isGameStarted: boolean;
   isSocketConnected: boolean;
+  gameId: string;
 };
 
 type GameStateBody = {

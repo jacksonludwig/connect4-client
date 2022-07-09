@@ -9,6 +9,7 @@ export const WebsocketContext = createContext<WebsocketContextType>({
   currentTurn: 1,
   isGameStarted: false,
   isSocketConnected: false,
+  gameId: '',
 });
 
 /**
@@ -41,6 +42,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
   const [currentTurn, setCurrentTurn] = useState<PlayerToken>(1);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
+  const [gameId, setGameId] = useState<string>('');
   /* eslint-enable */
 
   /**
@@ -82,6 +84,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     winner,
     currentTurn,
     isGameStarted,
+    gameId,
   };
 
   return <WebsocketContext.Provider value={ret}>{children}</WebsocketContext.Provider>;
