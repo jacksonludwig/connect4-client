@@ -23,9 +23,10 @@ type Props = {
  * Context containing board state. Handles messages from the server and allows components to send
  * messages.
  */
-export const WebsocketProvider = ({ children }: Props): ReactElement => {
+const WebsocketProvider = ({ children }: Props): ReactElement => {
   const ws = useRef<WebSocket | null>(null);
 
+  /* eslint-disable */
   const [board, setBoard] = useState<Board>([
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -39,6 +40,7 @@ export const WebsocketProvider = ({ children }: Props): ReactElement => {
   const [currentTurn, setCurrentTurn] = useState<PlayerToken>(1);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
+  /* eslint-enable */
 
   /**
    * Simple wrapper function to log if websocket is not yet connected. This should never actually happen
@@ -77,3 +79,5 @@ export const WebsocketProvider = ({ children }: Props): ReactElement => {
 
   return <WebsocketContext.Provider value={ret}>{children}</WebsocketContext.Provider>;
 };
+
+export default WebsocketProvider;

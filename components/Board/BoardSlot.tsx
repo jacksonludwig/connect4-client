@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { ReactElement } from 'react';
-import { PLAYER_COLOR_MAP } from '../../../types/PlayerColor';
+import { PLAYER_COLOR_MAP } from '../../types/PlayerColor';
 
 type BoardSlotProps = {
   filledBy: PlayerToken;

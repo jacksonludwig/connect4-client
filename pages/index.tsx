@@ -1,9 +1,9 @@
 import { ChakraProvider, Flex } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Board from './components/Board/Board';
-import LoadingOverlay from './components/LoadingOverlay/LoadingOverlay';
-import { useWebSocket } from './context/Websocket';
+import Board from '../components/Board/Board';
+import LoadingOverlay from '../components/LoadingOverlay/LoadingOverlay';
+import { useWebSocket } from '../context/Websocket';
 
 const Main: NextPage = () => {
   const { isSocketConnected } = useWebSocket();
