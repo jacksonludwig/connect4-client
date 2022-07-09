@@ -60,7 +60,7 @@ export const WebsocketProvider = ({ children }: Props): ReactElement => {
     ws.current = socket;
 
     return () => socket.close();
-  });
+  }, []);
 
   const ret = {
     ws: ws.current,
