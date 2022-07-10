@@ -41,6 +41,7 @@ const BoardSlot = ({
       onMouseEnter={() => setHighlightedColumn(column)}
       onMouseLeave={() => setHighlightedColumn(null)}
       onClick={dropPieceInColumn}
+      _hover={{ cursor: 'pointer' }}
     >
       <Box
         h={innerResponsiveSize}
