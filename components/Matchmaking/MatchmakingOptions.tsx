@@ -1,4 +1,4 @@
-import { Button, Center, Flex, HStack, Input, Text, useToast } from '@chakra-ui/react';
+import { Button, Center, Flex, HStack, Input, Text } from '@chakra-ui/react';
 import { DuplicateIcon } from '@heroicons/react/outline';
 import { ReactElement, useState } from 'react';
 import { useWebSocket } from '../context/Websocket';
@@ -7,10 +7,9 @@ import { useWebSocket } from '../context/Websocket';
  * Matchmaking options (e.g. join, create)
  */
 const MatchmakingOptions = (): ReactElement => {
-  const { gameId, sendMessage } = useWebSocket();
+  const { gameId, sendMessage, toast } = useWebSocket();
 
   const [joinGameId, setJoinGameId] = useState<string>('');
-  const toast = useToast();
 
   const createGame = () => {
     sendMessage({

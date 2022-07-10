@@ -17,6 +17,7 @@ type WebsocketContextType = {
   setBoard: React.Dispatch<Board>;
   setWinner: React.Dispatch<WinnerToken>;
   setIsGameStarted: React.Dispatch<boolean>;
+  toast: (options?: UseToastOptions | undefined) => ToastId;
 };
 
 type GameStateBody = {
@@ -53,6 +54,8 @@ namespace Server {
   export type CreateResponse = {
     gameId: string;
   };
+
+  export type PlaceResponse = Record<string, never>;
 
   export type GameStateBody = {
     board: PlayerToken[][];

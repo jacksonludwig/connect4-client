@@ -2,8 +2,9 @@ type MessageUtilType = {
   ws: WebSocket;
   message: { [key: string]: any };
   setGameId: React.Dispatch<React.SetStateAction<string>>;
-  setCurrentTurn: React.Dispatch<PlayerToken>;
-  setBoard: React.Dispatch<Board>;
+  setCurrentTurn: WebsocketContextType['setCurrentTurn'];
+  setBoard: WebsocketContextType['setBoard'];
+  toast: WebsocketContextType['toast'];
 };
 
 class MessageHandler {
@@ -12,6 +13,7 @@ class MessageHandler {
   public setGameId: MessageUtilType['setGameId'];
   public setCurrentTurn: MessageUtilType['setCurrentTurn'];
   public setGameState: MessageUtilType['setBoard'];
+  public toast: MessageUtilType['toast'];
 
   constructor(data: MessageUtilType) {
     this.ws = data.ws;
@@ -19,6 +21,7 @@ class MessageHandler {
     this.setGameId = data.setGameId;
     this.setCurrentTurn = data.setCurrentTurn;
     this.setGameState = data.setBoard;
+    this.toast = data.toast;
   }
 }
 
@@ -48,7 +51,19 @@ class StatusNotificationUtil extends MessageHandler {
   }
 
   public PlayerJoined() {
-    return;
+    const message = this.message as Server.StatusMessage;
+
+    if (message.status === 'fail') {
+      console.log('player failed to join');
+      return;
+    }
+
+    this.toast({
+      title: 'Another player joined your game!',
+      status: 'success',
+      isClosable: true,
+      duration: 5000,
+    });
   }
 }
 
@@ -64,6 +79,7 @@ class MessageUtil extends MessageHandler {
       setGameId: this.setGameId,
       setCurrentTurn: this.setCurrentTurn,
       setBoard: this.setGameState,
+      toast: this.toast,
     })[this.message.message as Server.StatusNotification]();
   }
 
@@ -71,9 +87,22 @@ class MessageUtil extends MessageHandler {
     const message = this.message as Server.ResponseMessage<Server.JoinResponse>;
 
     if (message.status === 'rejected') {
-      console.log('could not join game');
+      this.toast({
+        title: 'Could not join game',
+        description: `Reason: ${message.reason}`,
+        status: 'error',
+        isClosable: true,
+        duration: 5000,
+      });
       return;
     }
+
+    this.toast({
+      title: 'Joined game!',
+      status: 'success',
+      isClosable: true,
+      duration: 5000,
+    });
 
     this.setGameId(message.body.gameId);
   }
@@ -82,7 +111,13 @@ class MessageUtil extends MessageHandler {
     const message = this.message as Server.ResponseMessage<Server.CreateResponse>;
 
     if (message.status === 'rejected') {
-      console.log('could not create game');
+      this.toast({
+        title: 'Could not create game',
+        description: `Reason: ${message.reason}`,
+        status: 'error',
+        isClosable: true,
+        duration: 5000,
+      });
       return;
     }
 
@@ -90,7 +125,17 @@ class MessageUtil extends MessageHandler {
   }
 
   public PlacePiece() {
-    return;
+    const message = this.message as Server.ResponseMessage<Server.PlaceResponse>;
+
+    if (message.status === 'rejected') {
+      this.toast({
+        title: 'Could not place piece',
+        description: `Reason: ${message.reason}`,
+        status: 'error',
+        isClosable: true,
+        duration: 5000,
+      });
+    }
   }
 }
 
