@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { ReactElement } from 'react';
 import Board from '../Board/Board';
 import { useWebSocket } from '../context/Websocket';
@@ -14,8 +14,10 @@ const Game = (): ReactElement => {
   return (
     <Flex direction='column' h='100vh' justify='center' align='center'>
       <LoadingOverlay enabled={!isSocketConnected} />
-      <MatchmakingOptions />
-      <Board />
+      <VStack>
+        <MatchmakingOptions />
+        <Board />
+      </VStack>
     </Flex>
   );
 };

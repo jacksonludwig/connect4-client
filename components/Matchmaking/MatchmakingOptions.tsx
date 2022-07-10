@@ -38,7 +38,7 @@ const MatchmakingOptions = (): ReactElement => {
   };
 
   return (
-    <HStack w='100%' justify='center'>
+    <HStack w='100%' justify='space-between'>
       <Flex minWidth='16rem' direction='column'>
         <Button colorScheme='blue' size='lg' onClick={createGame}>
           Create Game
