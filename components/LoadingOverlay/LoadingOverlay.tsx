@@ -16,6 +16,7 @@ const LoadingOverlay = ({ enabled }: Props): ReactElement => {
           h='100%'
           w='100%'
           bg='rgba(0, 0, 0, 0.5)'
+          zIndex='9998'
         >
           <Spinner
             thickness='0.3rem'
@@ -23,6 +24,7 @@ const LoadingOverlay = ({ enabled }: Props): ReactElement => {
             emptyColor='gray.200'
             color='blue.500'
             size='xl'
+            zIndex='9999'
           />
         </Flex>
       )}

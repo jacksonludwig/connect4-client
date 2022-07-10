@@ -38,8 +38,8 @@ const MatchmakingOptions = (): ReactElement => {
   };
 
   return (
-    <HStack>
-      <Flex minWidth='50%' direction='column'>
+    <HStack w='100%' justify='center'>
+      <Flex minWidth='16rem' direction='column'>
         <Button colorScheme='blue' size='lg' onClick={createGame}>
           Create Game
         </Button>
@@ -51,9 +51,11 @@ const MatchmakingOptions = (): ReactElement => {
           rounded='lg'
           bg='gray.200'
         >
-          <Text color='gray.500'>{gameId || 'Your Game ID'}</Text>
+          <Text ml='1rem' color='gray.500'>
+            {gameId || 'Your Game ID'}
+          </Text>
           <Button
-            ml='1'
+            ml='auto'
             color='gray.600'
             p='0'
             size='sm'
@@ -66,7 +68,7 @@ const MatchmakingOptions = (): ReactElement => {
           </Button>
         </Flex>
       </Flex>
-      <Flex minWidth='50%' direction='column'>
+      <Flex minWidth='16rem' direction='column'>
         <Button colorScheme='blue' size='lg' onClick={joinGame}>
           Join Game
         </Button>

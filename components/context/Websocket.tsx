@@ -28,7 +28,6 @@ type Props = {
 const WebsocketProvider = ({ children }: Props): ReactElement => {
   const ws = useRef<WebSocket | null>(null);
 
-  /* eslint-disable */
   const [board, setBoard] = useState<Board>([
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -43,7 +42,6 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
   const [gameId, setGameId] = useState<string>('');
-  /* eslint-enable */
 
   /**
    * Simple wrapper function to log if websocket is not yet connected. This should never actually happen
