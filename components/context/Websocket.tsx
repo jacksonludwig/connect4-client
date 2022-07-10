@@ -61,7 +61,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket(process.env.REACT_APP_SOCKET_HOST ?? 'ws://localhost:4001');
+    const socket = new WebSocket(process.env.NEXT_PUBLIC_SOCKET_HOST || 'ws://localhost:4001');
 
     socket.onopen = () => setIsSocketConnected(true);
     socket.onclose = () => console.log('socket closed');
