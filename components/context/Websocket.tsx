@@ -1,4 +1,5 @@
 import React, { createContext, ReactElement, useContext, useEffect, useRef, useState } from 'react';
+import { setTimeout } from 'timers';
 import MessageUtil from '../../utils/MessageUtil';
 
 export const WebsocketContext = createContext<WebsocketContextType>({
@@ -61,23 +62,33 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
   };
 
   useEffect(() => {
-    const socket = new WebSocket(process.env.NEXT_PUBLIC_SOCKET_HOST || 'ws://localhost:4001');
+    const connect = () => {
+      const socket = new WebSocket(process.env.NEXT_PUBLIC_SOCKET_HOST || 'ws://localhost:4001');
 
-    socket.onopen = () => setIsSocketConnected(true);
-    socket.onclose = () => console.log('socket closed');
-    socket.onmessage = (event) => {
-      console.log(`received message from server: ${event.data}`);
+      socket.onopen = () => setIsSocketConnected(true);
 
-      const data = JSON.parse(event.data);
+      socket.onclose = () => {
+        console.log('socket closed, retrying...');
+        setIsSocketConnected(false);
+        setTimeout(connect, 1000);
+      };
 
-      new MessageUtil({ ws: socket, message: data, setGameId, setCurrentTurn, setBoard })[
-        data.name as Server.PossibleMessage
-      ]();
+      socket.onmessage = (event) => {
+        console.log(`received message from server: ${event.data}`);
+
+        const data = JSON.parse(event.data);
+
+        new MessageUtil({ ws: socket, message: data, setGameId, setCurrentTurn, setBoard })[
+          data.name as Server.PossibleMessage
+        ]();
+      };
+
+      ws.current = socket;
+
+      return () => socket.close();
     };
 
-    ws.current = socket;
-
-    return () => socket.close();
+    return connect();
   }, []);
 
   const ret = {
