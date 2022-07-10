@@ -15,6 +15,8 @@ type WebsocketContextType = {
   gameId: string;
   setCurrentTurn: React.Dispatch<PlayerToken>;
   setBoard: React.Dispatch<Board>;
+  setWinner: React.Dispatch<WinnerToken>;
+  setIsGameStarted: React.Dispatch<boolean>;
 };
 
 type GameStateBody = {
@@ -103,4 +105,3 @@ namespace Client {
     body: CreateData | JoinData | PlacePieceData;
   };
 }
-

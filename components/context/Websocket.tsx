@@ -12,6 +12,8 @@ export const WebsocketContext = createContext<WebsocketContextType>({
   gameId: '',
   setBoard: () => [],
   setCurrentTurn: () => 1,
+  setWinner: () => -1,
+  setIsGameStarted: () => false,
 });
 
 /**
@@ -89,6 +91,8 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     gameId,
     setBoard,
     setCurrentTurn,
+    setIsGameStarted,
+    setWinner,
   };
 
   return <WebsocketContext.Provider value={ret}>{children}</WebsocketContext.Provider>;
