@@ -10,6 +10,8 @@ export const WebsocketContext = createContext<WebsocketContextType>({
   isGameStarted: false,
   isSocketConnected: false,
   gameId: '',
+  setBoard: () => [],
+  setCurrentTurn: () => 1,
 });
 
 /**
@@ -66,7 +68,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
 
       const data = JSON.parse(event.data);
 
-      new MessageUtil({ ws: socket, message: data, setGameId })[
+      new MessageUtil({ ws: socket, message: data, setGameId, setCurrentTurn, setBoard })[
         data.name as Server.PossibleMessage
       ]();
     };
@@ -85,6 +87,8 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     currentTurn,
     isGameStarted,
     gameId,
+    setBoard,
+    setCurrentTurn,
   };
 
   return <WebsocketContext.Provider value={ret}>{children}</WebsocketContext.Provider>;

@@ -13,6 +13,8 @@ type WebsocketContextType = {
   isGameStarted: boolean;
   isSocketConnected: boolean;
   gameId: string;
+  setCurrentTurn: React.Dispatch<PlayerToken>;
+  setBoard: React.Dispatch<Board>;
 };
 
 type GameStateBody = {
