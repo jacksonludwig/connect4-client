@@ -3,6 +3,8 @@ import React, { createContext, ReactElement, useContext, useEffect, useRef, useS
 import { setTimeout } from 'timers';
 import MessageUtil from '../../utils/MessageUtil';
 
+// TODO: use standaloneToast instead of passing around toast hook from this context
+
 export const WebsocketContext = createContext<WebsocketContextType>({
   ws: null,
   sendMessage: () => {},

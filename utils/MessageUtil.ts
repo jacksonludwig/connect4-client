@@ -65,6 +65,16 @@ class StatusNotificationUtil extends MessageHandler {
       duration: 5000,
     });
   }
+
+  public PlayerLeft() {
+    this.toast({
+      title: 'The opposing player disconnected!',
+      description: 'Try recreating your lobby and inviting them again.',
+      status: 'error',
+      isClosable: true,
+      duration: 60000,
+    });
+  }
 }
 
 class MessageUtil extends MessageHandler {
