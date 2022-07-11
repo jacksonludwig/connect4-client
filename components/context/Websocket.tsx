@@ -94,7 +94,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     };
 
     return connect();
-  }, []);
+  }, [toast]);
 
   const ret = {
     ws: ws.current,
