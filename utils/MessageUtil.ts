@@ -121,6 +121,13 @@ class MessageUtil extends MessageHandler {
       return;
     }
 
+    this.toast({
+      title: 'Game lobby created!',
+      status: 'success',
+      isClosable: true,
+      duration: 5000,
+    });
+
     this.setGameId(message.body.gameId);
   }
 
