@@ -1,9 +1,6 @@
-import { useToast } from '@chakra-ui/react';
 import React, { createContext, ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import { setTimeout } from 'timers';
 import MessageUtil from '../../utils/MessageUtil';
-
-// TODO: use standaloneToast instead of passing around toast hook from this context
 
 export const WebsocketContext = createContext<WebsocketContextType>({
   ws: null,
@@ -18,7 +15,6 @@ export const WebsocketContext = createContext<WebsocketContextType>({
   setCurrentTurn: () => 1,
   setWinner: () => -1,
   setIsGameStarted: () => false,
-  toast: () => {},
 });
 
 /**
@@ -51,7 +47,6 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
   const [gameId, setGameId] = useState<string>('');
-  const toast = useToast();
 
   /**
    * Simple wrapper function to log if websocket is not yet connected. This should never actually happen
@@ -83,7 +78,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
 
         const data = JSON.parse(event.data);
 
-        new MessageUtil({ ws: socket, message: data, setGameId, setCurrentTurn, setBoard, toast })[
+        new MessageUtil({ ws: socket, message: data, setGameId, setCurrentTurn, setBoard })[
           data.name as Server.PossibleMessage
         ]();
       };
@@ -94,7 +89,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     };
 
     return connect();
-  }, [toast]);
+  }, []);
 
   const ret = {
     ws: ws.current,
@@ -109,7 +104,6 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     setCurrentTurn,
     setIsGameStarted,
     setWinner,
-    toast,
   };
 
   return <WebsocketContext.Provider value={ret}>{children}</WebsocketContext.Provider>;

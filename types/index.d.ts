@@ -17,7 +17,6 @@ type WebsocketContextType = {
   setBoard: React.Dispatch<Board>;
   setWinner: React.Dispatch<WinnerToken>;
   setIsGameStarted: React.Dispatch<boolean>;
-  toast: (options?: UseToastOptions | undefined) => ToastId;
 };
 
 type GameStateBody = {
