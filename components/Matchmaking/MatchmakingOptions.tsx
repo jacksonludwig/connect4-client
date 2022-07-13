@@ -1,4 +1,14 @@
-import { Button, Center, Flex, Heading, HStack, Input, Text, useToast, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import { DuplicateIcon } from '@heroicons/react/outline';
 import { ReactElement, useEffect, useState } from 'react';
 import { PLAYER_COLOR_MAP } from '../../types/PlayerColor';
