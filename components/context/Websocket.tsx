@@ -96,7 +96,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     };
 
     return connect();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const ret = {
     ws: ws.current,
