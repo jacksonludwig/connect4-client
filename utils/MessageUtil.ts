@@ -8,6 +8,9 @@ type MessageUtilType = {
   setGameId: React.Dispatch<React.SetStateAction<string>>;
   setCurrentTurn: WebsocketContextType['setCurrentTurn'];
   setBoard: WebsocketContextType['setBoard'];
+  setWinner: WebsocketContextType['setWinner'];
+  isGameStarted: WebsocketContextType['isGameStarted'];
+  setIsGameStarted: WebsocketContextType['setIsGameStarted'];
 };
 
 class MessageHandler {
@@ -16,6 +19,9 @@ class MessageHandler {
   public setGameId: MessageUtilType['setGameId'];
   public setCurrentTurn: MessageUtilType['setCurrentTurn'];
   public setGameState: MessageUtilType['setBoard'];
+  public setWinner: MessageUtilType['setWinner'];
+  public isGameStarted: MessageUtilType['isGameStarted'];
+  public setIsGameStarted: MessageUtilType['setIsGameStarted'];
 
   constructor(data: MessageUtilType) {
     this.ws = data.ws;
@@ -23,6 +29,9 @@ class MessageHandler {
     this.setGameId = data.setGameId;
     this.setCurrentTurn = data.setCurrentTurn;
     this.setGameState = data.setBoard;
+    this.setWinner = data.setWinner;
+    this.isGameStarted = data.isGameStarted;
+    this.setIsGameStarted = data.setIsGameStarted;
   }
 }
 
@@ -32,11 +41,18 @@ class StatusNotificationUtil extends MessageHandler {
   }
 
   public GameOver() {
-    return;
+    const message = this.message as Server.StatusMessage<GameOverBody>;
+
+    if (message.status === 'fail' || !message.body) {
+      console.log('game over error');
+      return;
+    }
+
+    this.setWinner(message.body.winner);
   }
 
   public GameState() {
-    const message = this.message as Server.StatusMessage;
+    const message = this.message as Server.StatusMessage<GameStateBody>;
 
     if (message.status === 'fail' || !message.body) {
       console.log('game state error');
@@ -52,7 +68,7 @@ class StatusNotificationUtil extends MessageHandler {
   }
 
   public PlayerJoined() {
-    const message = this.message as Server.StatusMessage;
+    const message = this.message as Server.StatusMessage<undefined>;
 
     if (message.status === 'fail') {
       console.log('player failed to join');
@@ -65,6 +81,8 @@ class StatusNotificationUtil extends MessageHandler {
       isClosable: true,
       duration: 5000,
     });
+
+    this.setIsGameStarted(true);
   }
 
   public PlayerLeft() {
@@ -90,6 +108,9 @@ class MessageUtil extends MessageHandler {
       setGameId: this.setGameId,
       setCurrentTurn: this.setCurrentTurn,
       setBoard: this.setGameState,
+      setWinner: this.setWinner,
+      isGameStarted: this.isGameStarted,
+      setIsGameStarted: this.setIsGameStarted,
     })[this.message.message as Server.StatusNotification]();
   }
 
@@ -115,6 +136,7 @@ class MessageUtil extends MessageHandler {
     });
 
     this.setGameId(message.body.gameId);
+    this.setIsGameStarted(true);
   }
 
   public CreateGame() {

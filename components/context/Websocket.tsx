@@ -78,9 +78,16 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
 
         const data = JSON.parse(event.data);
 
-        new MessageUtil({ ws: socket, message: data, setGameId, setCurrentTurn, setBoard })[
-          data.name as Server.PossibleMessage
-        ]();
+        new MessageUtil({
+          ws: socket,
+          message: data,
+          setGameId,
+          setCurrentTurn,
+          setBoard,
+          setWinner,
+          isGameStarted,
+          setIsGameStarted,
+        })[data.name as Server.PossibleMessage]();
       };
 
       ws.current = socket;

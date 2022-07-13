@@ -20,13 +20,13 @@ type WebsocketContextType = {
 };
 
 type GameStateBody = {
-  board: Connect4.SlotOwner[][];
-  currentTurn: Connect4.SlotOwner;
-  winner: Connect4.SlotOwner;
+  board: PlayerToken[][];
+  currentTurn: PlayerToken;
+  winner: PlayerToken;
 };
 
 type GameOverBody = {
-  winner: Connect4.SlotOwner;
+  winner: WinnerToken;
 };
 
 namespace Server {
@@ -65,11 +65,11 @@ namespace Server {
     winner: WinnerToken;
   };
 
-  export type StatusMessage = {
+  export type StatusMessage<Body> = {
     status: 'success' | 'fail' | 'info';
     message: StatusNotification;
 
-    body?: GameStateBody;
+    body?: Body;
   };
 
   export type ResponseMessage<AcceptedBody> = {

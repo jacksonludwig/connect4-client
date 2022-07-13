@@ -1,17 +1,19 @@
-import { Button, Center, Flex, HStack, Input, Text, useToast } from '@chakra-ui/react';
+import { Button, Center, Flex, Heading, HStack, Input, Text, useToast } from '@chakra-ui/react';
 import { DuplicateIcon } from '@heroicons/react/outline';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
+import { PLAYER_COLOR_MAP } from '../../types/PlayerColor';
 import { useWebSocket } from '../context/Websocket';
 
 /**
  * Matchmaking options (e.g. join, create)
  */
 const MatchmakingOptions = (): ReactElement => {
-  const { gameId, sendMessage } = useWebSocket();
+  const { gameId, sendMessage, currentTurn, isGameStarted } = useWebSocket();
 
   const toast = useToast();
 
   const [joinGameId, setJoinGameId] = useState<string>('');
+  const [currentTurnColor, setCurrentTurnColor] = useState<string>('');
 
   const createGame = () => {
     sendMessage({
@@ -37,6 +39,10 @@ const MatchmakingOptions = (): ReactElement => {
       duration: 3000,
     });
   };
+
+  useEffect(() => {
+    setCurrentTurnColor(PLAYER_COLOR_MAP[currentTurn]);
+  }, [currentTurn]);
 
   return (
     <HStack w='100%' justify='space-between'>
@@ -69,6 +75,17 @@ const MatchmakingOptions = (): ReactElement => {
           </Button>
         </Flex>
       </Flex>
+      {isGameStarted && (
+        <Flex>
+          <Heading>
+            <HStack>
+              <Text>Player</Text>
+              <Text textColor={currentTurnColor}>{`${currentTurn}'s`}</Text>
+              <Text>Turn</Text>
+            </HStack>
+          </Heading>
+        </Flex>
+      )}
       <Flex minWidth='16rem' direction='column'>
         <Button colorScheme='blue' size='lg' onClick={joinGame}>
           Join Game
