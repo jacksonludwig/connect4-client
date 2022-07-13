@@ -1,4 +1,4 @@
-import { Button, Center, Flex, Heading, HStack, Input, Text, useToast } from '@chakra-ui/react';
+import { Button, Center, Flex, Heading, HStack, Input, Text, useToast, VStack } from '@chakra-ui/react';
 import { DuplicateIcon } from '@heroicons/react/outline';
 import { ReactElement, useEffect, useState } from 'react';
 import { PLAYER_COLOR_MAP } from '../../types/PlayerColor';
@@ -78,11 +78,10 @@ const MatchmakingOptions = (): ReactElement => {
       {isGameStarted && (
         <Flex>
           <Heading>
-            <HStack>
-              <Text>Player</Text>
+            <VStack>
               <Text textColor={currentTurnColor}>{`${currentTurn}'s`}</Text>
               <Text>Turn</Text>
-            </HStack>
+            </VStack>
           </Heading>
         </Flex>
       )}
