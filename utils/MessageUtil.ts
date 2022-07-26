@@ -19,6 +19,8 @@ class MessageUtil extends MessageHandler {
       setWinner: this.setWinner,
       isGameStarted: this.isGameStarted,
       setIsGameStarted: this.setIsGameStarted,
+      isInGame: this.isInGame,
+      setIsInGame: this.setIsInGame,
     })[this.message.message as Server.StatusNotification]();
   }
 
@@ -44,6 +46,7 @@ class MessageUtil extends MessageHandler {
     });
 
     this.setGameId(message.body.gameId);
+    this.resetState();
     this.setIsGameStarted(true);
   }
 
@@ -69,6 +72,7 @@ class MessageUtil extends MessageHandler {
     });
 
     this.setGameId(message.body.gameId);
+    this.resetState();
   }
 
   public PlacePiece() {

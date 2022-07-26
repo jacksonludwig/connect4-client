@@ -10,11 +10,13 @@ export const WebsocketContext = createContext<WebsocketContextType>({
   currentTurn: 1,
   isGameStarted: false,
   isSocketConnected: false,
+  isInGame: false,
   gameId: '',
   setBoard: () => [],
   setCurrentTurn: () => 1,
   setWinner: () => -1,
   setIsGameStarted: () => false,
+  setIsInGame: () => false,
 });
 
 /**
@@ -47,6 +49,7 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
   const [gameId, setGameId] = useState<string>('');
+  const [isInGame, setIsInGame] = useState<boolean>(false);
 
   /**
    * Simple wrapper function to log if websocket is not yet connected. This should never actually happen
@@ -86,6 +89,8 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
           setBoard,
           setWinner,
           isGameStarted,
+          isInGame,
+          setIsInGame,
           setIsGameStarted,
         })[data.name as Server.PossibleMessage]();
       };
@@ -106,6 +111,8 @@ const WebsocketProvider = ({ children }: Props): ReactElement => {
     winner,
     currentTurn,
     isGameStarted,
+    isInGame,
+    setIsInGame,
     gameId,
     setBoard,
     setCurrentTurn,
